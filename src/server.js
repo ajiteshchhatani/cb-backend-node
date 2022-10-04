@@ -17,7 +17,6 @@ function getRandomSeconds() {
 }
 
 app.post('/fakeApi/login', (req, res) => {
-    console.log(req.body)
     const timeElapsed = getRandomSeconds();
     setTimeout(() => {
         res.send({
@@ -37,7 +36,6 @@ app.post('/fakeApi/login', (req, res) => {
 
 app.get('/fakeApi/users', (req, res) => {
     const timeElapsed = getRandomSeconds();
-    console.log(req.query.page)
     let page = 0;
     let rowsPerPage = 15;
     let totalRecords = USERS.length;
@@ -56,6 +54,22 @@ app.get('/fakeApi/users', (req, res) => {
             ]
         })
     }, timeElapsed)
+})
+
+app.post('/fakeApi/deleteUser', (req, res) => {
+    const timeElapsed = getRandomSeconds();
+    if(req.body.id) {
+        const deleteIndex = USERS.findIndex((row) => row.id === req.body.id)
+        USERS.splice(deleteIndex, 1)
+        setTimeout(() => {
+            res.send({
+                "status": "Success",
+                "data": [
+                    ...USERS
+                ]
+            })
+        }, timeElapsed)
+    }
 })
 
 app.listen(8080, () => console.log("Server running on http://localhost:8080"))
